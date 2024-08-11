@@ -1,21 +1,16 @@
-# @beanc16/jwt-helpers
+# @beanc16/api-key-generator
 
-Helpers to make JWT handling simpler.
-
-<!-- Badges -->
-![npm][npm-version]
-![license][npm-license]
-![downloads][npm-downloads]
+Makes api key handling simpler.
 
 
 
 ## Table of Contents
-- [@beanc16/jwt-helpers](#beanc16jwt-helpers)
+- [@beanc16/api-key-generator](#beanc16api-key-generator)
   - [Table of Contents](#table-of-contents)
   - [Install](#install)
   - [Usage](#usage)
-    - [Generating a JWT Token](#generating-a-jwt-token)
-    - [Authenticating a JWT Token](#authenticating-a-jwt-token)
+    - [Get an API key](#get-an-api-key)
+    - [Validate API key](#validate-api-key)
   - [License](#license)
 
 
@@ -23,43 +18,34 @@ Helpers to make JWT handling simpler.
 This is a [Node.js](https://nodejs.org/en/) module available through the github registry.
 
 ```bash
-$ npm install @beanc16/jwt-helpers
+$ npm install @beanc16/api-key-generator
 ```
 
 
 
 ## Usage
 
-### Generating a JWT Token
+### Get an API key
 
 ```js
-const { getAccessToken } = require("@beanc16/jwt-helpers");
+const { ApiKeyGenerator } = require("@beanc16/api-key-generator");
 
-const jwt = getAccessToken({ foo: "bar" });
+const expirationTimeInSeconds = 31_536_000; // 31,536,000 seconds (1 year)
+const apiKey = ApiKeyGenerator.get(expirationTime);
 ```
 
-### Authenticating a JWT Token
+### Validate API key
 
 ```js
-const { authenticateTokenServiceToService } = require("@beanc16/jwt-helpers");
-const express = require("express");
+const { ApiKeyGenerator } = require("@beanc16/api-key-generator");
 
-const app = express();
-
-app.get("/some-url", authenticateTokenServiceToService, (req, res) =>
+if(!ApiKeyGenerator.isValid("someApiKey"))
 {
-  res.send("Successfully authenticated!");
-});
+  throw new Error("Api key is invalid");
+}
 ```
 
 
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
-
-
-
-<!-- Shield URLs -->
-[npm-version]: https://img.shields.io/npm/v/@beanc16/jwt-helpers
-[npm-license]: https://img.shields.io/npm/l/@beanc16/jwt-helpers
-[npm-downloads]: https://img.shields.io/npm/dm/@beanc16/jwt-helpers
